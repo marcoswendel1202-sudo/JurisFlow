@@ -1,0 +1,54 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  oabNumber String?
+  oabState  String?
+  createdAt DateTime @default(now())
+  clients   Client[]
+  documents Document[]
+}
+
+model Client {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id])
+  name      String
+  cpf       String?
+  phone     String
+  email     String?
+  address   String?
+  city      String?
+  state     String?
+  legalArea String
+  caseDesc  String?
+  status    String    @default("NEW")
+  dealValue Float?
+  source    String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  documents Document[]
+}
+
+model Document {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  clientId  String
+  client    Client   @relation(fields: [clientId], references: [id])
+  type      String
+  title     String
+  filePath  String?
+  status    String   @default("draft")
+  createdAt DateTime @default(now())
+}
