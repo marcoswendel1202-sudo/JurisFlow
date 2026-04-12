@@ -14,6 +14,12 @@ model User {
   password  String
   oabNumber String?
   oabState  String?
+  metaAccessToken    String?
+  metaAdAccounts     String?
+  metaSelectedAccount String?
+  googleAccessToken  String?
+  googleRefreshToken String?
+  instagramToken     String?
   createdAt DateTime @default(now())
   clients   Client[]
   documents Document[]
